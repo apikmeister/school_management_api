@@ -3,13 +3,22 @@
   "version": "1.0.50",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "bun run --watch src/index.ts"
+    "dev": "bun run --watch src/index.ts",
+    "db:studio": "drizzle-kit studio",
+    "db:push": "drizzle-kit push:mysql --config=drizzle.config.ts"
   },
   "dependencies": {
-    "elysia": "latest"
+    "@elysiajs/jwt": "^0.7.1",
+    "dotenv": "^16.3.1",
+    "drizzle-orm": "^0.29.1",
+    "drizzle-typebox": "^0.1.1",
+    "elysia": "latest",
+    "kysely": "^0.26.3",
+    "mysql2": "^3.6.5"
   },
   "devDependencies": {
-    "bun-types": "latest"
+    "bun-types": "latest",
+    "drizzle-kit": "^0.20.7"
   },
   "module": "src/index.js"
 }
