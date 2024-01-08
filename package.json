@@ -5,6 +5,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "bun run --watch src/index.ts",
     "db:studio": "drizzle-kit studio",
+    "db:generate": "drizzle-kit generate:mysql --config=drizzle.config.ts",
     "db:push": "drizzle-kit push:mysql --config=drizzle.config.ts"
   },
   "dependencies": {
