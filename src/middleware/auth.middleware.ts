@@ -28,10 +28,5 @@ export const isAuthenticated = (app: Elysia) =>
     if (!auth) throw { code: 401, message: "Unauthorized" };
     // if (!auth) throw { code: 401, message: "Unauthorized" };
       return { auth };
-    // return { bearerToken };
-    // const auth = headers['Authorization'];
 
-    // return {
-    //   bearer: auth?.startsWith("Bearer ") ? auth.slice("Bearer ".length) : null,
-    // }
   });

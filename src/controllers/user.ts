@@ -43,6 +43,8 @@ export const userController = new Elysia({ prefix: "/user" })
         const nextIdStr = nextId.toString().padStart(4, "0");
         // const uniqueId = `S${String(studentCounter).padStart(4, '0')}`;
         // studentCounter++;
+        const currentDate: Date = new Date();
+
         // const user = await db.insertInto("user").values({ username, password }).execute();
         const insertStudent = await db
           .insertInto("school_members")
@@ -54,8 +56,8 @@ export const userController = new Elysia({ prefix: "/user" })
             address,
             gender,
             school_id: schoolId,
-            role: "student",
-            hire_date: new Date(Date.now()).toISOString().split('T')[0],
+            role: "Student",
+            hire_date: currentDate,
           })
           .executeTakeFirst();
         console.log(insertStudent);
@@ -219,9 +221,11 @@ export const userController = new Elysia({ prefix: "/user" })
 
         // Format the nextId with leading zeros
         const nextIdStr = nextId.toString().padStart(4, "0");
+        // const currentDate: Date = new Date().toISOString().split('T')[0];
+        const currentDate: Date = new Date();
         // const user = await db.insertInto("user").values({ username, password }).execute();
         // const insertTeacher =
-        await db
+        const inserTeacher = await db
           .insertInto("school_members")
           .values({
             user_id: "T" + nextIdStr,
@@ -231,10 +235,11 @@ export const userController = new Elysia({ prefix: "/user" })
             address,
             gender,
             school_id: schoolId,
-            role: "teacher",
-            hire_date: new Date(Date.now()).toISOString().split('T')[0],
+            role: "Teacher",
+            hire_date: currentDate,
           })
           .executeTakeFirst();
+
         return { message: "Teacher created successfully" };
       } catch (error) {
         return { error };
@@ -326,7 +331,7 @@ export const userController = new Elysia({ prefix: "/user" })
       const { memberId } = params;
       const { firstName, lastName, address, schoolId, gender } =
         body as SchoolMembers;
-        const { classId } = body as StudentClass
+      const { classId } = body as StudentClass;
 
       if (!memberId) {
         return {
@@ -334,37 +339,64 @@ export const userController = new Elysia({ prefix: "/user" })
           message: "Bad Request",
         };
       }
-      if (memberId.startsWith('S')) {
-      const insertClass = await db
-      .insertInto("student_class")
-      .values({
-        class_id: classId,
-        student_id: memberId,
-      })
-      .execute();
-      const member = await db
-        .updateTable("school_members")
-        .set({
-          first_name: firstName,
-          last_name: lastName,
-          address: address,
-          gender: gender,
-          updated_at: new Date(),
-        })
-        .where("user_id", "=", memberId)
-        .executeTakeFirst();
+      console.log("hi");
+      if (memberId.startsWith("S")) {
+        console.log("Student");
+        const selectClass = await db
+          .selectFrom("student_class")
+          .selectAll()
+          .where("student_id", "=", memberId)
+          .executeTakeFirst();
+        console.log(selectClass);
+        const newClassId = await db
+          .selectFrom("class")
+          .select(["class_id"])
+          .where("class_name", "=", classId.toString())
+          .limit(1)
+          .executeTakeFirst();
+
+        if (!selectClass) {
+          if (newClassId != undefined) {
+            const insertClass = await db
+              .insertInto("student_class")
+              .values({
+                class_id: newClassId?.class_id,
+                student_id: memberId,
+              })
+              .execute();
+          }
+        } else if (classId && newClassId) {
+          const updateClass = await db
+            .updateTable("student_class")
+            .set({
+              class_id: newClassId.class_id,
+            })
+            .where("student_id", "=", memberId)
+            .executeTakeFirst();
+        }
+        const member = await db
+          .updateTable("school_members")
+          .set({
+            first_name: firstName,
+            last_name: lastName,
+            address: address,
+            gender: gender,
+            updated_at: new Date(),
+          })
+          .where("user_id", "=", memberId)
+          .executeTakeFirst();
       } else {
         const member = await db
-        .updateTable("school_members")
-        .set({
-          first_name: firstName,
-          last_name: lastName,
-          address: address,
-          gender: gender,
-          updated_at: new Date(),
-        })
-        .where("user_id", "=", memberId)
-        .executeTakeFirst();
+          .updateTable("school_members")
+          .set({
+            first_name: firstName,
+            last_name: lastName,
+            address: address,
+            gender: gender,
+            updated_at: new Date(),
+          })
+          .where("user_id", "=", memberId)
+          .executeTakeFirst();
       }
       return { message: "Members updated successfully" };
     } catch (error) {

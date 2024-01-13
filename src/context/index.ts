@@ -6,7 +6,7 @@ export const ctx = new Elysia({
   name: "@app/ctx",
 })
 .decorate("db", db)
-.use(useJwt)
+// .use(useJwt)
 // .derive(async ({ headers, jwt }) => {
 //   const tokenPrefix = "Bearer ";
 //   const bearerToken = headers["Authorization"];

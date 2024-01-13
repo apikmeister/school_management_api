@@ -5,9 +5,48 @@ import { isAuthenticated } from "middleware/auth.middleware";
 
 export const resultController = new Elysia({ prefix: "/result" })
   .use(ctx)
-  .use(isAuthenticated)
+  // .get("/ic/:icNo", async ({ params, db }) => {
+  //   try {
+  //     const { icNo } = params;
+  //     const result = await db
+  //       .selectFrom("grade")
+  //       .innerJoin("student_class as sc", "sc.student_id", "grade.studentID")
+  //       // .innerJoin("class as c", "c.class_id", "sc.class_id")
+  //       .innerJoin("school_members as sm", "sm.user_id", "grade.studentID")
+  //       .innerJoin("subject as s", "s.subjectID", "grade.subjectID")
+  //       .select([
+  //         //   "sm.first_name",
+  //         // "sm.last_name",
+  //         // "c.class_name",
+  //         "grade.gradeID",
+  //         "s.subjectID",
+  //         "s.subject_name",
+  //         "grade.grade_level",
+  //         "grade.term",
+  //       ])
+  //       .where("sm.ic_no", "=", icNo)
+  //       .execute();
+
+  //     const student = await db
+  //       .selectFrom("school_members")
+  //       .innerJoin(
+  //         "student_class as sc",
+  //         "sc.student_id",
+  //         "school_members.user_id"
+  //       )
+  //       .innerJoin("class as c", "c.class_id", "sc.class_id")
+  //       .select(["first_name", "last_name", "c.class_name", "c.class_id"])
+  //       .where("ic_no", "=", icNo)
+  //       .executeTakeFirst();
+  //     return { student, result };
+  //   } catch (error) {
+  //     return { error };
+  //   }
+  // })
+  
 
   // VIEW RESULT BY ID
+  .use(isAuthenticated)
   .get("/:studentID", async ({ params, db }) => {
     try {
       const { studentID } = params;
