@@ -8,10 +8,12 @@ export default {
   driver: "mysql2",
   dbCredentials: {
     // uri: process.env.DATABASE_URL!,
-    database: "student_management",
+    database: process.env.DB_NAME,
     host: process.env.DB_HOST!,
     user: process.env.DB_USER!,
     port: parseInt(process.env.DB_PORT!),
     // connectionString: process.env.DATABASE_URL!,
   },
+  verbose: true,
+  strict: true,
 } satisfies Config;
