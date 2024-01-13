@@ -37,8 +37,8 @@ interface Database {
 
 export const db = new Kysely<Database>({
   dialect: new MysqlDialect({
-    pool: createPool({   //TODO: FIXME:
-      database: "student_management",
+    pool: createPool({ 
+      database: process.env.DB_NAME,
       host: process.env.DB_HOST,
       user: process.env.DB_USER,
       port: parseInt(process.env.DB_PORT!),

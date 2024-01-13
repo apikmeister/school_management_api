@@ -7,7 +7,7 @@ import { ClassTable } from "./class.schema";
 export const SubjectTable = mysqlTable("subject", {
   subjectID: varchar("subjectID", { length: 30 }).primaryKey(),
   subjectName: varchar("subject_name", { length: 30 }).notNull(),
-  schoolId: varchar("school_id", { length: 30 }).references(() => SchoolTable.schoolId, {onDelete: "cascade"}).notNull(),
+  // schoolId: varchar("school_id", { length: 30 }).references(() => SchoolTable.schoolId, {onDelete: "cascade"}).notNull(), //TODO: NOT BE IN
   //   updated_at: timestamp("updated_at").defaultNow().notNull(),
 });
 

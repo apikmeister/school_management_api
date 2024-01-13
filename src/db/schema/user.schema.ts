@@ -45,11 +45,12 @@ export const SchoolMembersTable = mysqlTable("school_members", {
   schoolId: varchar("school_id", { length: 30 })
     .references(() => SchoolTable.schoolId, { onDelete: "cascade" })
     .notNull(),
+  icNo: varchar("ic_no", { length: 12}).notNull().unique(),
   firstName: varchar("first_name", { length: 100 }).notNull(),
   lastName: varchar("last_name", { length: 100 }).notNull(),
-  gender: mysqlEnum("gender", ["male", "female"]).notNull(),
+  gender: mysqlEnum("gender", ["Male", "Female"]).notNull(),
   address: varchar("address", { length: 255 }).notNull(),
-  role: mysqlEnum("role", ["student", "teacher"]).notNull(),
+  role: mysqlEnum("role", ["Student", "Teacher"]).notNull(),
   grade: varchar("grade", { length: 10 }),
   hireDate: timestamp("hire_date").defaultNow().notNull(),
   updated_at: timestamp("updated_at").defaultNow().notNull(),
